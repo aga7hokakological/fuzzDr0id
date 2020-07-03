@@ -32,7 +32,20 @@ fn generate_population(pop_size: i32) {
 }
 
 fn calculate_fitness(pop_vec: &mut Vec<String>) {
+    let mut random: HashMap<&str, f32> = HashMap::new();
 
+    let mut rng = rand::thread_rng();
+
+    for _ in 1..=100 {
+        let num = rng.gen_range(0, pop_vec.len());
+        let x: &String = &pop_vec[num];
+
+        let probability = rng.gen_range(0.0, 1.0);
+
+        random.insert(x, probability);
+    }
+
+    generate_parent(&mut random);
 }
 
 fn generate_parent(length: usize, charset: &[u8]) {
