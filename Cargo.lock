@@ -7,9 +7,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4785bdd1c96b2a846b2bd7cc02e86b6b3dbf14e7e53446c4f54c92a361040822"
 
 [[package]]
+name = "entropy"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e1769427d0c2b3744756471248e129fa81e1b0b853f243dc44c6a249a3f985d6"
+
+[[package]]
 name = "fuzz_dr0id"
 version = "0.1.0"
 dependencies = [
+ "entropy",
  "rand",
 ]
 

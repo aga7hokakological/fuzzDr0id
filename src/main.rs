@@ -1,7 +1,12 @@
 extern crate rand;
+extern crate entropy;
 
 // use rand::{thread_rng, Rng};
 use rand::Rng;
+use rand::seq::SliceRandom;
+use entropy::shannon_entropy;
+use std::collections::BTreeMap;
+
 
 fn generate_population(pop_size: i32) {
 
@@ -13,7 +18,7 @@ fn generate_population(pop_size: i32) {
 
     // let mut x: String = String::from("");
 
-    for _i in 0..pop_size {
+    for _ in 0..pop_size {
         let x: String = (0..LEGNTH)
         .map(|_| {
             let idx = rng.gen_range(0, CHARSET.len());
@@ -28,51 +33,64 @@ fn generate_population(pop_size: i32) {
     //     println!("{}", j);
     // }
     calculate_fitness(&mut population);
-    generate_parent(LEGNTH, CHARSET);
+    // generate_parent(LEGNTH, CHARSET);
 }
 
 fn calculate_fitness(pop_vec: &mut Vec<String>) {
-    let mut random: HashMap<&str, f32> = HashMap::new();
+    let mut random: BTreeMap<&str, f32> = BTreeMap::new();
 
     let mut rng = rand::thread_rng();
 
-    for _ in 1..=100 {
+    for _ in 1..=1000 {
         let num = rng.gen_range(0, pop_vec.len());
         let x: &String = &pop_vec[num];
 
-        let probability = rng.gen_range(0.0, 1.0);
+        let entropy = shannon_entropy(x.as_bytes());
 
-        random.insert(x, probability);
+        random.insert(x, entropy);
     }
+
+    // for (k, p) in random.iter() {
+    // 	println!("{} \t=\t\t{}", k, p);
+    // }
 
     generate_parent(&mut random);
 }
 
-fn generate_parent(length: usize, charset: &[u8]) {
-    let mut rng = rand::thread_rng();
+fn generate_parent(arr: &mut BTreeMap<&str, f32>) {
 
-    let parent1: String = (0..length)
-        .map(|_| {
-            let idx = rng.gen_range(0, charset.len());
-            charset[idx] as char
-        })
-        .collect();
-    
-    let parent2: String = (0..length)
-        .map(|_| {
-            let idx = rng.gen_range(0, charset.len());
-            charset[idx] as char
-        })
-        .collect();
+	let mut parent: Vec<String> = Vec::new();
+	let mut rng = rand::thread_rng();
 
-    println!("{}", parent1);
-    println!("{}", parent2);
+    for (s, v) in arr.iter(){ 
+    	if v>&4.8 {
+    		let fit_parent: String = (&s).to_string();
+    		parent.push(fit_parent);
+    	}
+	}
+
+	// for i in parent.iter() {
+	// 	println!("{}", i);
+	// }
+
+	let parent1 = parent.choose(&mut rng); 
+	let parent2 = parent.choose(&mut rng);
+    println!("{:?}", parent1);
+    println!("{:?}", parent2);
+
+    // crossover(parent1, parent2);
 }
 
+// fn crossover(p1: String, p2: String) -> String {
+// 	let mut string = p1.replace_range(&mut self, range: (5..15).start_bound(), replace_with: &p2)
+
+// 	println!("{:?}", string);
+// }
+
 fn main() {
-    const POP_SIZE: i32 = 1000;
-    // const CROSSOVER: f32 = 0.5;
-    // const MUTATION: f32 = 0.13;
+    const POP_SIZE: i32 = 100000;
+    const CROSSOVER: f32 = 0.8;
+    const MUTATION: f32 = 0.13;
     // const MAX_GEN: i32 = 0;
 
     // let people: String = String::from("<{[(abcdefghijklmnopqrstuvwxyz _-+=/.,ABCDEFGHIJKLMNOPQRSTUVWXYZ)]}>");
