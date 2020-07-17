@@ -73,19 +73,26 @@ fn generate_parent(arr: &mut BTreeMap<&str, f32>) {
 	// 	println!("{}", i);
 	// }
 
-	let parent1 = parent.choose(&mut rng); 
-	let parent2 = parent.choose(&mut rng);
-    println!("{:?}", parent1);
-    println!("{:?}", parent2);
+    let parent1 = parent.choose(&mut rng).unwrap().to_string();
+    let parent2 = parent.choose(&mut rng).unwrap().to_string();
+    // println!("{:?}", parent1);
+    // println!("{:?}", parent2);
 
-    // crossover(parent1, parent2);
+    crossover(parent1, parent2);
 }
 
-// fn crossover(p1: String, p2: String) -> String {
-// 	let mut string = p1.replace_range(&mut self, range: (5..15).start_bound(), replace_with: &p2)
+fn crossover(p1: String, p2: String) -> () {
+    // let mut string = p1.replace_range(&mut self, range: (0..6).start_bound(), replace_with: &p2)
+    let s1 = &p1[0..16];
+    let s2 = &p2[15..30];
 
-// 	println!("{:?}", string);
-// }
+    let string = s1.to_string() + &s2.to_string();
+	println!("{:?}", string);
+}
+
+fn mutation() {
+    
+}
 
 fn main() {
     const POP_SIZE: i32 = 100000;
