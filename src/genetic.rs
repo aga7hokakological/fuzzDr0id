@@ -87,9 +87,16 @@ pub fn crossover(p1: String, p2: String) -> () {
     let s2 = &p2[15..30];
 
     let string = s1.to_string() + &s2.to_string();
-	println!("{:?}", string);
+    println!("{:?}", string);
+    
+    mutation(string);
 }
 
-fn mutation() {
-    
+fn mutation(string: String) {
+    // let byte_string = string.as_bytes();
+    println!("{:?}", string.as_bytes());
+
+    let mutated = string[15..30].to_string() + &string[0..16].to_string(); 
+
+    println!("{:?}", mutated);
 }
