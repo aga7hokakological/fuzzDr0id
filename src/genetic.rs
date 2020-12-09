@@ -2,31 +2,49 @@ extern crate rand;
 extern crate entropy;
 
 // use rand::{thread_rng, Rng};
-use rand::Rng;
+use rand::{Rng, thread_rng};
 use rand::seq::SliceRandom;
+use rand::distributions::Alphanumeric;
 use entropy::shannon_entropy;
 use std::collections::BTreeMap;
 
 
+#[test]
+fn sample_fun() {
+    let rand_string: String = thread_rng()
+        .sample_iter(&Alphanumeric)
+        .take(30)
+        .collect();
+
+    println!("{}", rand_string);
+}
+
 pub fn generate_population(pop_size: i32) {
 
     let mut population = Vec::new(); 
-    const CHARSET: &[u8] = b"<{[(abcdefghijklmnopqrstuvwxyz _-+=/.,ABCDEFGHIJKLMNOPQRSTUVWXYZ)]}>";
-    const LEGNTH: usize = 30;
+    // const CHARSET: &[u8] = b"<{[(abcdefghijklmnopqrstuvwxyz _-+=/.,ABCDEFGHIJKLMNOPQRSTUVWXYZ)]}>";
+    // const LEGNTH: usize = 30;
 
-    let mut rng = rand::thread_rng();
+    // let mut rng = rand::thread_rng();
 
     // let mut x: String = String::from("");
 
+    // for _ in 0..pop_size {
+    //     let x: String = (0..LEGNTH)
+    //     .map(|_| {
+    //         let idx = rng.gen_range(0, CHARSET.len());
+    //         CHARSET[idx] as char
+    //     })
+    //     .collect();   
+    // }
+
     for _ in 0..pop_size {
-        let x: String = (0..LEGNTH)
-        .map(|_| {
-            let idx = rng.gen_range(0, CHARSET.len());
-            CHARSET[idx] as char
-        })
+        let rand_string: String = thread_rng()
+        .sample_iter(&Alphanumeric)
+        .take(30)
         .collect();
 
-        population.push(x);
+        population.push(rand_string);
     }
 
     // for j in population.iter() {
@@ -94,7 +112,7 @@ pub fn crossover(p1: String, p2: String) -> () {
 
 fn mutation(string: String) {
     // let byte_string = string.as_bytes();
-    println!("{:?}", string.as_bytes());
+    // println!("{:?}", string.as_bytes());
 
     let mutated = string[15..30].to_string() + &string[0..16].to_string(); 
 
